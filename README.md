@@ -1,7 +1,7 @@
 # M2MT-Net
 This repository is the official implementation of the paper "Beyond Subspace Isolation: Many-to-Many Transformer for Light Field Image Super-resolution" published in TMM 2024.
 
-[[arxiv](https://arxiv.org/abs/2401.00740)] [[IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/10812790)]
+[[arXiv](https://arxiv.org/abs/2401.00740)] [[IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/10812790)]
 
 <img src="https://raw.github.com/huzexi/M2MT-Net/main/figs/M2MT.jpg" width="500">
 <img src="https://raw.github.com/huzexi/M2MT-Net/main/figs/Efficiency.jpg" width="1000">
@@ -12,7 +12,7 @@ The repo is based on [BasicLFSR](https://github.com/ZhengyuLiang24/BasicLFSR) an
 Please refer to the repo for preliminaries such as dataset preparation before testing.
 
 ## Testing
-Download the pretrained weight files from the repo's release page.
+Download the pretrained weight files from [the repo's release page](https://github.com/huzexi/M2MT-Net/releases/).
 To test the model, run the following command:
 ```bash
 # For 4x LFSR
