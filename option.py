@@ -1,5 +1,12 @@
 import argparse
 
+
+def str2bool(v):
+    if isinstance(v, bool):
+        return v
+    return str(v).lower() in ('true', '1', 'yes', 'y', 't')
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--task', type=str, default='SR', help='SR, RE')
 
@@ -8,7 +15,7 @@ parser.add_argument("--angRes", type=int, default=5, help="angular resolution")
 parser.add_argument("--scale_factor", type=int, default=2, help="4, 2")
 
 parser.add_argument('--model_name', type=str, default='LFT', help="model name")
-parser.add_argument("--use_pre_ckpt", type=bool, default=True, help="use pre model ckpt")
+parser.add_argument("--use_pre_ckpt", type=str2bool, default=True, help="use pre model ckpt")
 parser.add_argument("--path_pre_pth", type=str, default='./pth/', help="path for pre model ckpt")
 parser.add_argument('--data_name', type=str, default='ALL',
                     help='EPFL, HCI_new, HCI_old, INRIA_Lytro, Stanford_Gantry, ALL(of Five Datasets)')

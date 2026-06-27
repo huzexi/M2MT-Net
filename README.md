@@ -1,5 +1,5 @@
 # M2MT-Net
-This repository is the official implementation of the paper "Beyond Subspace Isolation: Many-to-Many Transformer for Light Field Image Super-resolution" published in TMM 2024.
+This repository is the official implementation of the paper "Beyond Subspace Isolation: Many-to-Many Transformer for Light Field Image Super-resolution" published in IEEE Transactions on Multimedia (TMM) 2024.
 
 [[arXiv](https://arxiv.org/abs/2401.00740)] [[IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/10812790)]
 
@@ -9,18 +9,35 @@ This repository is the official implementation of the paper "Beyond Subspace Iso
 ## Setup
 The repo is based on [BasicLFSR](https://github.com/ZhengyuLiang24/BasicLFSR) and provides the minimal code to reproduce the results in the paper.
 
-Please refer to the repo for preliminaries such as dataset preparation before testing.
+Please refer to that repo for preliminaries such as dataset preparation before training or testing.
+
+Requires Python >= 3.9. Install the dependencies with:
+```bash
+# GPU build (CUDA 12.1 example); see https://pytorch.org for other CUDA versions
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+pip install -r requirements.txt
+```
 
 ## Testing
-Download the pretrained weight files from [the repo's release page](https://github.com/huzexi/M2MT-Net/releases/).
+Download the pretrained weight files from [the repo's release page](https://github.com/huzexi/M2MT-Net/releases/) into a `weights/` folder.
 To test the model, run the following command:
 ```bash
 # For 4x LFSR
-python test.py --scale_factor 4 --model_name M2MTNet --path_pre_pth weights/M2MTNet.4x.n9.pth --path_for_test data_for_test/
+python test.py --scale_factor 4 --model_name M2MTNet --path_pre_pth weights/M2MTNet.4x.n8.pth --path_for_test data_for_test/
 # For 2x LFSR
-python test.py --scale_factor 2 --model_name M2MTNet --path_pre_pth weights/M2MTNet.2x.n8.pth --path_for_test data_for_test/
+python test.py --scale_factor 2 --model_name M2MTNet --path_pre_pth weights/M2MTNet.2x.n9.pth --path_for_test data_for_test/
 ```
-Before testing the 2x model, please change the config in `model/SR/M2MTNet/M2MTNetConfig.py` to `n_block=9`.
+Before testing the 2x model, please change the config in `model/SR/M2MTNet/M2MTNetConfig.py` to `n_block=9` (the default `n_block=8` matches the 4x weight).
+
+## Training
+Prepare the training data following [BasicLFSR](https://github.com/ZhengyuLiang24/BasicLFSR), then run:
+```bash
+# For 4x LFSR (train from scratch; default config n_block=8)
+python train.py --scale_factor 4 --model_name M2MTNet --use_pre_ckpt False --path_for_train data_for_training/ --path_for_test data_for_test/
+# For 2x LFSR (first set n_block=9 in model/SR/M2MTNet/M2MTNetConfig.py)
+python train.py --scale_factor 2 --model_name M2MTNet --use_pre_ckpt False --path_for_train data_for_training/ --path_for_test data_for_test/
+```
+`--use_pre_ckpt False` is required to train from scratch; otherwise the script attempts to load a checkpoint from `--path_pre_pth`. Key defaults: `batch_size=4`, `lr=2e-4`, `epoch=51`, StepLR (`n_steps=15`, `gamma=0.5`). Per-epoch checkpoints, validation results, and an `evaluation.xls` are written under `log/`.
 
 ## Benchmark
 ### 2x LFSR
